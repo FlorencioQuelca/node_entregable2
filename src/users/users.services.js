@@ -21,8 +21,31 @@ const postNewUser = (req, res) => {
         res.status(400).json({ message: 'Invalid DATA', fields: { fist_name: 'string*', last_name: 'string*', email: 'email*', password: 'password*' } })
     }
 }
+const deleteUserById = (req, res) => {
+    const data = userControllers.findUserById(req.params.id)
+    if (data) {
+        const user = userControllers.deleteUserById(req.params.id)
+        res.status(200).json(user)
+    } else {
+        res.status(404).json({ message: 'Invalid ID' })
+    }
+}
+const editUserById = (req, res) => {
+
+    const data = userControllers.findUserById(req.params.id)
+    if (data) {
+        const { first_name, last_name, email, password, birthday } = req.body
+        const user = userControllers.editUserById(req.params.id, { first_name, last_name, email, password, birthday })
+        res.status(200).json(user)
+    } else {
+        res.status(404).json({ message: 'Invalid ID' })
+    }
+
+}
 module.exports = {
     getAllUsers,
     getUserById,
-    postNewUser
+    postNewUser,
+    deleteUserById,
+    editUserById
 }
